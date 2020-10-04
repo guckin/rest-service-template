@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "target": "es6",
+    "rootDirs": [
+      "lib/",
+      "test/"
+    ],
+    "outDir": "build/dist/",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictNullChecks": true,
+    "types": [
+      "koa-body"
+    ]
+  }
+}
