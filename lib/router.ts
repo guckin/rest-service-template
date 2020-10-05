@@ -3,27 +3,31 @@ import {Context} from 'koa';
 
 
 interface RequestBase {
-    headers: object;
+    readonly headers: object;
 }
 
 export interface RequestWithBody<R> extends RequestBase{
-    body: R;
+    readonly body: R;
 }
 
 export interface RequestWithoutBody extends RequestBase {}
 
 export interface Response<B, S extends number> {
-    status: S;
-    body: B;
+    readonly status: S;
+    readonly body: B;
 }
 
-export type HandlerWithBody<R, B, S extends number> =
-    (request: RequestWithBody<R>) => Promise<Response<B, S>> | Response<B, S>;
+export interface RouteWithBody<R, B, S extends number> {
+    readonly path: string;
+    readonly handler: (request: RequestWithBody<R>) => Promise<Response<B, S>> | Response<B, S>;
+}
 
-export type HandlerWithNoBody<B, S extends number> =
-    (request: RequestWithoutBody) => Promise<Response<B, S>> | Response<B, S>;
+export interface RouteWithoutBody<B, S extends number> {
+    readonly path: string;
+    readonly handler: (request: RequestWithoutBody) => Promise<Response<B, S>> | Response<B, S>;
+}
 
-export function get<B, S extends number>(path: string, handler: HandlerWithNoBody<B, S>): (router: Router) => void {
+export function get<B, S extends number>({path, handler}: RouteWithoutBody<B, S>): (router: Router) => void {
     return (router) => {
         console.log('Registering route for GET', path);
         router.get(path, async (ctx: Context) => setResponse(
@@ -34,7 +38,7 @@ export function get<B, S extends number>(path: string, handler: HandlerWithNoBod
         ));
     }
 }
-export function post<R, B, S extends number>(path: string, handler: HandlerWithBody<R, B, S>): (router: Router) => void {
+export function post<R, B, S extends number>({path, handler}: RouteWithBody<R, B, S>): (router: Router) => void {
     return (router) => {
         console.log('Registering route for POST', path);
         router.post(path, async (ctx: Context) => setResponse(
