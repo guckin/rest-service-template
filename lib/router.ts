@@ -1,7 +1,6 @@
 import * as Router from 'koa-router';
 import {Context} from 'koa';
 
-
 interface RequestBase {
     readonly headers: object;
 }

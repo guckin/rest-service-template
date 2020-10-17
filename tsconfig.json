@@ -16,6 +16,9 @@
     "strictNullChecks": true,
     "types": [
       "koa-body"
+    ],
+    "lib": [
+      "es2019"
     ]
   }
 }
